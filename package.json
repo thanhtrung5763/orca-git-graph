@@ -17,16 +17,6 @@
   },
   "license": "MIT",
   "author": "thanhtrung5763",
-  "contributors": [
-    {
-      "name": "Michael Hutchison",
-      "url": "https://github.com/mhutchie"
-    },
-    {
-      "name": "Asis Pattisahusiwa",
-      "url": "https://github.com/asispts"
-    }
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/thanhtrung5763/orca-git-graph.git"

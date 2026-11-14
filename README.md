@@ -3,9 +3,7 @@
 A sidebar panel for [Orca](https://github.com/stablyai/orca) that shows your repository's commit graph
 and runs common Git actions from it.
 
-It is a port of [neo-git-graph](https://github.com/asispts/neo-git-graph), the MIT-licensed fork of
-mhutchie's [Git Graph](https://github.com/mhutchie/vscode-git-graph) for VS Code, and it runs entirely
-on your machine: it calls the `git` on your `PATH` in your own repositories.
+It runs entirely on your machine: it calls the `git` on your `PATH` in your own repositories.
 
 ## Features
 
@@ -59,8 +57,6 @@ branch only, and "Speed up large repositories".
 
 How it is built is in [docs/orca-plugin.md](docs/orca-plugin.md).
 
-## Licence and credits
+## Licence
 
-[MIT](LICENSE). Based on neo-git-graph by Asis Pattisahusiwa, itself a fork of the last MIT-licensed
-version of Git Graph by Michael Hutchison (mhutchie). Later versions of the original Git Graph are not
-MIT-licensed and none of their code is used here.
+[MIT](LICENSE). Based on [neo-git-graph](https://github.com/asispts/neo-git-graph).

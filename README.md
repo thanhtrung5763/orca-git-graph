@@ -5,6 +5,8 @@ and runs common Git actions from it.
 
 It runs entirely on your machine: it calls the `git` on your `PATH` in your own repositories.
 
+![Git Graph in Orca: the commit graph, search, and a commit's details](docs/images/git-graph.png)
+
 ## Features
 
 - Commit graph with branches, tags and remotes, loaded in pages and virtualized, so histories of

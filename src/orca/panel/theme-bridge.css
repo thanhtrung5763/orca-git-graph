@@ -1,0 +1,100 @@
+/*
+ * The neo-git-graph webview is styled with VS Code's theme variables (`--vscode-*`, see
+ * `src/webview/styles.css`). Orca's frames offer their own (`--orca-*`, set from the active theme and
+ * updated in place), so each VS Code variable the webview reads is defined here in terms of one.
+ */
+:root {
+  /* Orca's UI font is Geist; a frame cannot see it unless it is installed, so fall back to the system. */
+  --vscode-font-family: "Geist", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --vscode-editor-font-family:
+    ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+
+  /*
+   * What the panel is painted on. Orca draws its right sidebar on --sidebar, which frames are not
+   * given. In the default dark theme --sidebar is --card; painting the panel with --background
+   * instead leaves a darker slab against the sidebar's tab bar.
+   */
+  --gg-surface: var(--orca-card);
+
+  --vscode-foreground: var(--orca-foreground);
+  --vscode-editor-background: var(--gg-surface);
+  --vscode-focusBorder: var(--orca-ring);
+
+  --vscode-dropdown-background: var(--orca-popover);
+  --vscode-dropdown-foreground: var(--orca-popover-foreground);
+  --vscode-dropdown-border: var(--orca-border);
+  --vscode-menu-background: var(--orca-popover);
+  --vscode-menu-foreground: var(--orca-popover-foreground);
+  --vscode-menu-selectionBackground: var(--orca-accent);
+  --vscode-menu-selectionForeground: var(--orca-accent-foreground);
+
+  --vscode-list-activeSelectionBackground: var(--orca-accent);
+  --vscode-list-activeSelectionForeground: var(--orca-accent-foreground);
+  --vscode-list-inactiveSelectionBackground: color-mix(
+    in srgb,
+    var(--orca-foreground) 10%,
+    transparent
+  );
+  --vscode-list-hoverBackground: color-mix(in srgb, var(--orca-foreground) 7%, transparent);
+
+  --vscode-input-background: color-mix(in srgb, var(--orca-foreground) 6%, var(--orca-background));
+  --vscode-input-foreground: var(--orca-foreground);
+  --vscode-checkbox-background: color-mix(
+    in srgb,
+    var(--orca-foreground) 6%,
+    var(--orca-background)
+  );
+  --vscode-checkbox-border: var(--orca-border);
+
+  --vscode-button-background: var(--orca-primary);
+  --vscode-button-foreground: var(--orca-primary-foreground);
+  --vscode-button-hoverBackground: color-mix(
+    in srgb,
+    var(--orca-primary) 85%,
+    var(--orca-foreground)
+  );
+
+  --vscode-widget-shadow: rgba(0, 0, 0, 0.36);
+  --vscode-scrollbar-shadow: rgba(0, 0, 0, 0.4);
+
+  --vscode-gitDecoration-addedResourceForeground: #3fb950;
+  --vscode-gitDecoration-modifiedResourceForeground: #d29922;
+  --vscode-gitDecoration-deletedResourceForeground: #f85149;
+}
+
+/*
+ * Colours of upstream's stylesheet that are fixed greys (`@theme` in src/webview/styles.css); Orca's
+ * own lines and quiet text take their place. Unlayered, so they win over Tailwind's theme layer.
+ */
+:root {
+  --color-line: var(--orca-border);
+  --color-line-soft: var(--orca-border);
+  --color-muted: var(--orca-muted-foreground);
+}
+
+/* Orca puts `light` or `dark` on <html>. */
+:root.light {
+  /* The light theme's --sidebar (#fafafa) is its --card (#fff) with 2% of the foreground in it. */
+  --gg-surface: color-mix(in srgb, var(--orca-foreground) 2%, var(--orca-card));
+  --vscode-widget-shadow: rgba(0, 0, 0, 0.16);
+  --vscode-scrollbar-shadow: rgba(0, 0, 0, 0.2);
+  --vscode-gitDecoration-addedResourceForeground: #1a7f37;
+  --vscode-gitDecoration-modifiedResourceForeground: #9a6700;
+  --vscode-gitDecoration-deletedResourceForeground: #cf222e;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--gg-surface);
+  color: var(--vscode-foreground);
+  color-scheme: light dark;
+}
+
+:root.light {
+  color-scheme: light;
+}
+
+:root.dark {
+  color-scheme: dark;
+}

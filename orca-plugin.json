@@ -1,0 +1,138 @@
+{
+  "manifestVersion": 2,
+  "execution": "trusted-worker",
+  "id": "git-graph",
+  "name": "Git Graph",
+  "version": "0.1.2",
+  "description": "View a graph of your Git history and run common Git actions from it. Based on neo-git-graph.",
+  "license": "MIT",
+  "engines": {
+    "orca": ">=1.4.248"
+  },
+  "pluginApi": 1,
+  "main": "out-orca/worker.mjs",
+  "contributes": {
+    "panels": [
+      {
+        "id": "git-graph",
+        "title": "Git Graph",
+        "icon": "branch",
+        "entry": "out-orca/panel.html",
+        "ui": "html"
+      }
+    ],
+    "statusBarItems": [
+      {
+        "id": "git-graph",
+        "text": "Git Graph",
+        "icon": "branch",
+        "tooltip": "Git Graph keeps watching your repositories while this plugin is enabled."
+      }
+    ],
+    "events": [
+      { "on": "workspace.created" },
+      { "on": "workspace.removed" },
+      { "on": "workspace.changed" }
+    ],
+    "settings": [
+      {
+        "key": "autoCenterCommitDetailsView",
+        "title": "Center the commit details view",
+        "description": "Scroll the commit table so the expanded commit is centered in the view.",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "dateFormat",
+        "title": "Date format",
+        "description": "How dates are shown in the commit table.",
+        "type": "string",
+        "enum": ["Date & Time", "Date Only", "Relative"],
+        "default": "Date & Time"
+      },
+      {
+        "key": "dateType",
+        "title": "Date type",
+        "description": "Which date of a commit is shown.",
+        "type": "string",
+        "enum": ["Author Date", "Commit Date"],
+        "default": "Author Date"
+      },
+      {
+        "key": "graphColours",
+        "title": "Graph colours",
+        "description": "Branch colours of the graph, separated by semicolons. Each is #RRGGBB, #RRGGBBAA or rgb(r, g, b).",
+        "type": "string",
+        "default": "#0085d9;#d9008f;#00d90a;#d98500;#a300d9;#ff0000;#00d9cc;#e138e8;#85d900;#dc5b23;#6f24d6;#ffcc00",
+        "multiline": true
+      },
+      {
+        "key": "graphStyle",
+        "title": "Graph style",
+        "description": "How the lines of the graph are drawn.",
+        "type": "string",
+        "enum": ["rounded", "angular"],
+        "default": "rounded"
+      },
+      {
+        "key": "initialLoadCommits",
+        "title": "Commits loaded initially",
+        "type": "integer",
+        "default": 300,
+        "minimum": 1,
+        "maximum": 5000
+      },
+      {
+        "key": "loadMoreCommits",
+        "title": "Commits loaded by Load More",
+        "type": "integer",
+        "default": 100,
+        "minimum": 1,
+        "maximum": 5000
+      },
+      {
+        "key": "maxDepthOfRepoSearch",
+        "title": "Repository search depth",
+        "description": "How many folder levels below a workspace to look for Git repositories. 0 only checks the workspace folder itself.",
+        "type": "integer",
+        "default": 0,
+        "minimum": 0,
+        "maximum": 10
+      },
+      {
+        "key": "showCurrentBranchByDefault",
+        "title": "Show the current branch by default",
+        "description": "Show only the checked-out branch instead of all branches when a repository opens.",
+        "type": "boolean",
+        "default": false
+      },
+      {
+        "key": "showUncommittedChanges",
+        "title": "Show uncommitted changes",
+        "description": "Show a row for uncommitted changes at the top of the graph.",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "writeCommitGraph",
+        "title": "Speed up large repositories",
+        "description": "When a repository's graph is slow to open, write git's commit-graph file for it, once, in the background. It is one cache file under .git/objects/info that git also writes when it runs gc, and it is safe to delete. Turn this off to leave repositories untouched.",
+        "type": "boolean",
+        "default": true
+      },
+      {
+        "key": "gitPath",
+        "title": "Git executable",
+        "description": "Path to the git executable. Leave empty to use git from PATH.",
+        "type": "string",
+        "default": "",
+        "placeholder": "git"
+      }
+    ]
+  },
+  "capabilities": [
+    { "kind": "workspace:read" },
+    { "kind": "storage:own" },
+    { "kind": "settings:own" }
+  ]
+}

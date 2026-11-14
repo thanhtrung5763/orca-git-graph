@@ -1,0 +1,147 @@
+.gg-diff {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background: var(--orca-background);
+  color: var(--orca-foreground);
+  font-size: 13px;
+}
+
+.gg-diff__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--orca-border);
+}
+
+.gg-diff__heading {
+  flex: 1 1 12rem;
+  min-width: 0;
+}
+
+.gg-diff__title {
+  overflow: hidden;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gg-diff__path {
+  overflow: hidden;
+  color: var(--orca-muted-foreground);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gg-diff__modes {
+  display: flex;
+  gap: 0.25rem;
+}
+
+/* `hidden` is the attribute that takes the layout toggle away on a narrow panel. */
+.gg-diff__modes[hidden] {
+  display: none;
+}
+
+.gg-diff__btn {
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--orca-border);
+  border-radius: var(--orca-radius, 6px);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.gg-diff__btn:hover,
+.gg-diff__btn[aria-pressed="true"] {
+  background: var(--orca-accent);
+  color: var(--orca-accent-foreground);
+}
+
+.gg-diff__btn:focus-visible {
+  outline: 2px solid var(--orca-ring);
+  outline-offset: 1px;
+}
+
+.gg-diff__body {
+  flex: 1;
+  overflow: auto;
+  font-family: var(--vscode-editor-font-family, ui-monospace, monospace);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.gg-diff__notice {
+  padding: 0.5rem 0.75rem;
+  color: var(--orca-muted-foreground);
+  font-family: var(--vscode-font-family, system-ui, sans-serif);
+}
+
+.gg-diff__notice--warn {
+  color: var(--vscode-gitDecoration-modifiedResourceForeground);
+}
+
+.gg-diff__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.gg-diff__table--split {
+  table-layout: fixed;
+}
+
+.gg-diff__hunk td {
+  padding: 0.15rem 0.75rem;
+  background: color-mix(in srgb, var(--orca-foreground) 8%, transparent);
+  color: var(--orca-muted-foreground);
+}
+
+.gg-diff__no {
+  width: 3.5rem;
+  padding: 0 0.5rem;
+  color: var(--orca-muted-foreground);
+  text-align: right;
+  vertical-align: top;
+  user-select: none;
+}
+
+.gg-diff__text {
+  padding: 0 0.5rem;
+  white-space: pre;
+}
+
+.gg-diff__text--wrap {
+  width: calc(50% - 3.5rem);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.gg-diff__marker {
+  display: inline-block;
+  width: 1.25ch;
+  color: var(--orca-muted-foreground);
+  user-select: none;
+}
+
+.gg-diff__row--add {
+  background: color-mix(in srgb, #2ea043 22%, transparent);
+}
+
+.gg-diff__row--del {
+  background: color-mix(in srgb, #f85149 22%, transparent);
+}
+
+.gg-diff__row--note {
+  color: var(--orca-muted-foreground);
+  font-style: italic;
+}
+
+.gg-diff__row--empty {
+  background: color-mix(in srgb, var(--orca-foreground) 4%, transparent);
+}

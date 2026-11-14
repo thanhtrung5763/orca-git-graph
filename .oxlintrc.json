@@ -1,0 +1,116 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "extends": [
+    "oxlint/baseline.config.json",
+    "oxlint/pedantic.config.json",
+    "oxlint/restriction.config.json",
+    "oxlint/style.config.json"
+  ],
+  "jsPlugins": [{ "name": "import-js", "specifier": "eslint-plugin-import" }],
+  "ignorePatterns": [".pnpm-store/**", ".idea/**", "out-orca/**", "node_modules/**", "*.config.js"],
+  "env": {
+    "node": true
+  },
+  "plugins": ["typescript", "node", "oxc", "import", "unicorn"],
+  "categories": {
+    "correctness": "error", // Code that is definitely wrong or useless
+    "perf": "error", // Rules that aim to improve runtime performance
+    "suspicious": "error", // Code that is likely to be wrong or useless,
+    "nursery": "error", // Rules that ban specific patterns or features,
+    "pedantic": "off", // Extra strict rules that may have false positives
+    "restriction": "off", // Rules under development that may change
+    "style": "off" // Idiomatic and consistent style rules
+  },
+  "rules": {
+    "eslint/no-underscore-dangle": "allow",
+    "unicorn/require-post-message-target-origin": "allow", // false-positive
+    "eslint/curly": "error",
+    "unicorn/prefer-node-protocol": "error",
+    "import/no-unassigned-import": ["error", { "allow": ["**/*.css"] }],
+    "import-js/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", ["parent", "sibling", "index"]],
+        "pathGroups": [
+          {
+            "pattern": "@/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "@tests/**",
+            "group": "internal",
+            "position": "after"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "fix": {
+          "imports": "safe-fix",
+          "variables": "suggestion"
+        }
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["src/webview/**/*.{ts,tsx}"],
+      "env": {
+        "node": false,
+        "browser": true
+      }
+    },
+    {
+      // The Orca plugin's panel runs in a browser frame, like the webview.
+      "files": ["src/orca/panel/**/*.{ts,tsx}"],
+      "env": {
+        "node": false,
+        "browser": true
+      }
+    },
+    {
+      // The benchmark prints its results, and its measurements must run strictly one after another.
+      "files": ["scripts/bench/**/*.mjs"],
+      "rules": {
+        "eslint/no-console": "off",
+        "eslint/no-await-in-loop": "off"
+      }
+    },
+    {
+      // A build script reports on the console.
+      "files": ["esbuild.js"],
+      "rules": {
+        "eslint/no-console": "off"
+      }
+    },
+    {
+      // Response handlers reduce state only. Actions start requests.
+      "files": ["src/webview/lib/handler/**/*.ts"],
+      "rules": {
+        "eslint/no-restricted-imports": [
+          "error",
+          {
+            "paths": [
+              {
+                "name": "@/webview/lib/vscode",
+                "message": "Response handlers write state only. Start requests from actions."
+              }
+            ],
+            "patterns": ["*/vscode", "./vscode"]
+          }
+        ]
+      }
+    }
+  ]
+}

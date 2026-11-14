@@ -1,0 +1,126 @@
+/*
+ * The search bar: at the top of the panel, and it stays there while the graph scrolls. The wrapper
+ * is what sticks (`main.tsx` makes it the first thing in the body): a sticky element only holds
+ * inside its parent, and the bar's parent is no taller than the bar.
+ */
+#orca-find {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.gg-find {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 6px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--orca-border);
+  background: var(--gg-surface);
+  font-size: 12px;
+}
+
+.gg-find__field {
+  display: flex;
+  flex: 1 1 10rem;
+  min-width: 0;
+}
+
+.gg-find__input {
+  width: 100%;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--orca-input);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--orca-foreground);
+  font: inherit;
+  outline: none;
+}
+
+.gg-find__input::placeholder {
+  color: var(--orca-muted-foreground);
+}
+
+.gg-find__input:focus-visible {
+  border-color: var(--orca-ring);
+  box-shadow: 0 0 0 1px var(--orca-ring);
+}
+
+.gg-find__input[aria-invalid="true"] {
+  border-color: var(--vscode-gitDecoration-deletedResourceForeground);
+  box-shadow: 0 0 0 1px var(--vscode-gitDecoration-deletedResourceForeground);
+}
+
+.gg-find__btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--orca-muted-foreground);
+  font: inherit;
+  cursor: pointer;
+}
+
+.gg-find__btn--text {
+  font-family: var(--vscode-editor-font-family);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.gg-find__btn:hover:not(:disabled) {
+  background: var(--orca-accent);
+  color: var(--orca-accent-foreground);
+}
+
+.gg-find__btn[aria-pressed="true"] {
+  border-color: var(--orca-ring);
+  background: var(--orca-accent);
+  color: var(--orca-accent-foreground);
+}
+
+.gg-find__btn:focus-visible {
+  outline: 2px solid var(--orca-ring);
+  outline-offset: 1px;
+}
+
+.gg-find__btn:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.gg-find__count {
+  min-width: 4.5rem;
+  color: var(--orca-muted-foreground);
+  text-align: right;
+  white-space: nowrap;
+}
+
+.gg-find__count[data-invalid] {
+  color: var(--vscode-gitDecoration-deletedResourceForeground);
+}
+
+/* The matching rows. A row's cells are painted, because the row's own background is not drawn under
+   the graph column. */
+tr[data-gg-match] {
+  scroll-margin-top: 48px;
+}
+
+tr[data-gg-match] > td {
+  background: color-mix(in srgb, var(--orca-ring) 28%, transparent);
+}
+
+tr[data-gg-match="current"] > td {
+  background: color-mix(in srgb, #d29922 38%, transparent);
+}
+
+tr[data-gg-match="current"] {
+  outline: 1px solid #d29922;
+  outline-offset: -1px;
+}

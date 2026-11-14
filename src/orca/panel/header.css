@@ -1,0 +1,118 @@
+/*
+ * The toolbar and the column titles, restyled to sit in Orca's sidebar. upstream's markup is
+ * unchanged (`src/webview/layout/MainHeader.tsx`, its only <header>); these rules are unlayered,
+ * so they win over Tailwind's utilities (which live in a layer) without !important.
+ *
+ * Before: a large pill button, labels and menus with different heights, everything centred with wide
+ * gaps, so it wrapped unevenly in a narrow sidebar. After: one compact row, left aligned, with
+ * every control the same height, in Orca's border and text colours.
+ */
+
+header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px 10px;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--orca-border);
+  font-size: 12px;
+}
+
+/* The group around the dropdowns and the checkbox: let its children wrap with the rest. */
+header > div {
+  display: contents;
+}
+
+/* Refresh: an icon button. Its text stays as the tooltip and the accessible name. */
+header > button {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  gap: 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--orca-muted-foreground);
+  font-size: 0;
+}
+
+header > button:hover {
+  background: var(--orca-accent);
+  color: var(--orca-accent-foreground);
+}
+
+header > button:focus-visible {
+  outline: 2px solid var(--orca-ring);
+  outline-offset: 1px;
+}
+
+/* A dropdown: the label, then the menu button. */
+header > div > div {
+  gap: 6px;
+}
+
+header div > span:first-child {
+  color: var(--orca-muted-foreground);
+}
+
+header [aria-haspopup="listbox"] {
+  height: 28px;
+  padding: 0 8px 0 10px;
+  border: 1px solid var(--orca-input);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--orca-foreground);
+  font-size: 12px;
+}
+
+header [aria-haspopup="listbox"]:not(:focus-visible) {
+  outline: none;
+}
+
+header [aria-haspopup="listbox"]:hover:not(:disabled) {
+  background: var(--orca-accent);
+  color: var(--orca-accent-foreground);
+}
+
+/*
+ * A dropdown's menu. Upstream anchors it to the right edge of its button and sizes it to its content,
+ * which grew it leftwards out of the panel once the toolbar was left aligned. It opens from the left
+ * edge now; `popoverFit.ts` moves it back in if that runs out of the right edge, and it is never
+ * wider than the panel.
+ */
+header div:has(> input[role="combobox"]) {
+  right: auto;
+  left: 0;
+  max-width: calc(100vw - 16px);
+}
+
+/* Let a button shrink with the panel, truncating its text. */
+header > div > div {
+  min-width: 0;
+}
+
+header [aria-haspopup="listbox"] {
+  min-width: 0;
+}
+
+/* "Show Remote Branches". */
+header label {
+  gap: 6px;
+  color: var(--orca-muted-foreground);
+  font-size: 12px;
+}
+
+header label:hover {
+  color: var(--orca-foreground);
+}
+
+/* The column titles. */
+thead th {
+  height: 30px;
+  color: var(--orca-muted-foreground);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}

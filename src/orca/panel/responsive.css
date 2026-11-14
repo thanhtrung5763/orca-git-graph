@@ -1,0 +1,99 @@
+/*
+ * The panel lives in a resizable sidebar, so it has to work from a narrow column to a wide pane.
+ * The frame's viewport is the panel, so these are media queries on the panel's width.
+ *
+ * The commit table is the part that does not shrink: its date, author and commit columns have
+ * fixed widths and take everything, which left the description a few characters wide. Dropping
+ * the least useful column first keeps the description readable, and room for the branch and tag
+ * labels in front of it (a half-width sidebar is about 660px, and the description needs about 400px
+ * of that to show a branch name and some of the message):
+ *
+ *   under 760px  no author         (columns: graph, description, date, author, commit)
+ *   under 600px  no commit hash
+ *   under 480px  no date
+ *
+ * Upstream's markup is unchanged. A column is dropped by giving it no width, not by hiding its
+ * cells: the commit details row is one cell spanning four columns, and with `display: none` the
+ * browser adds columns of its own to honour that span, so the table overflows. A column that
+ * keeps its place in the grid at zero width keeps the span valid. Its `col` has an inline width,
+ * hence `!important`; `visibility: collapse` is ignored for such a column in a fixed layout. The
+ * date and author headers carry a minimum width (`CommitTable`), which must not hold a dropped
+ * column open, hence `min-width: 0 !important` too.
+ */
+
+/*
+ * The commit details row. In the table's automatic layout its content (the file tree and the summary)
+ * sets how wide its columns must be, which widened the description column past a narrow panel. The
+ * content gets no intrinsic width here, so it fills the columns instead of sizing them.
+ */
+table td[colspan] > div {
+  contain: inline-size;
+}
+
+@media (max-width: 759px) {
+  table > colgroup > col:nth-child(4) {
+    width: 0 !important;
+  }
+
+  table > thead th:nth-child(4),
+  table > tbody > tr > td:nth-child(4) {
+    width: 0;
+    min-width: 0 !important;
+    max-width: 0;
+    padding: 0;
+    border-width: 0;
+    overflow: hidden;
+  }
+
+  /*
+   * The resize handles measure the header cells to save their widths, and a dropped column
+   * measures as nothing, so there is no resizing while a column is dropped.
+   */
+  table > thead th > [class*="cursor-col-resize"] {
+    display: none;
+  }
+}
+
+@media (max-width: 599px) {
+  table > colgroup > col:nth-child(5) {
+    width: 0 !important;
+  }
+
+  table > thead th:nth-child(5),
+  table > tbody > tr > td:nth-child(5) {
+    width: 0;
+    min-width: 0 !important;
+    max-width: 0;
+    padding: 0;
+    border-width: 0;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 479px) {
+  table > colgroup > col:nth-child(3) {
+    width: 0 !important;
+  }
+
+  table > thead th:nth-child(3),
+  table > tbody > tr > td:nth-child(3) {
+    width: 0;
+    min-width: 0 !important;
+    max-width: 0;
+    padding: 0;
+    border-width: 0;
+    overflow: hidden;
+  }
+}
+
+/* The toolbar: the dropdowns say what they are by their value. */
+@media (max-width: 419px) {
+  header {
+    gap: 6px;
+    padding: 6px 8px;
+  }
+
+  header div > span:first-child {
+    display: none;
+  }
+}

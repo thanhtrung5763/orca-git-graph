@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.json",
+  "include": ["./**/*.ts", "../../src/orca/types/*.d.ts"],
+  "exclude": []
+}

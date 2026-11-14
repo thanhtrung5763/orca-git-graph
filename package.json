@@ -1,0 +1,65 @@
+{
+  "name": "orca-git-graph",
+  "version": "0.1.2",
+  "private": true,
+  "description": "Git Graph for Orca: a commit graph panel with common Git actions.",
+  "keywords": [
+    "git",
+    "git graph",
+    "git history",
+    "git log",
+    "orca",
+    "orca-plugin"
+  ],
+  "homepage": "https://github.com/thanhtrung5763/orca-git-graph",
+  "bugs": {
+    "url": "https://github.com/thanhtrung5763/orca-git-graph/issues"
+  },
+  "license": "MIT",
+  "author": "thanhtrung5763",
+  "contributors": [
+    {
+      "name": "Michael Hutchison",
+      "url": "https://github.com/mhutchie"
+    },
+    {
+      "name": "Asis Pattisahusiwa",
+      "url": "https://github.com/asispts"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thanhtrung5763/orca-git-graph.git"
+  },
+  "scripts": {
+    "build": "node esbuild.js",
+    "watch": "node esbuild.js --watch",
+    "package": "pnpm run typecheck && pnpm run lint && node esbuild.js --production",
+    "typecheck": "tsc -p . && tsc -p src/orca/panel && tsc -p src/webview && tsc -p tests && tsc -p tests/webview && tsc -p tests/orca",
+    "test": "vitest run",
+    "bench": "node scripts/bench/bench.mjs",
+    "format": "oxfmt --check",
+    "format:fix": "oxfmt .",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix"
+  },
+  "dependencies": {
+    "@preact/signals": "^2.11.1",
+    "preact": "^10.29.8",
+    "simple-git": "^3.36.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "~24.13.3",
+    "esbuild": "^0.28.2",
+    "eslint-plugin-import": "^2.32.0",
+    "jsdom": "^30.0.1",
+    "oxfmt": "^0.64.0",
+    "oxlint": "^1.79.0",
+    "postcss": "^8.5.26",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vitest": "^4.1.11"
+  },
+  "packageManager": "pnpm@11.15.1"
+}

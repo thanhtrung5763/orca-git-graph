@@ -1,0 +1,11 @@
+declare module "*.css";
+
+declare function acquireVsCodeApi(): {
+  getState(): unknown;
+  setState(state: unknown): void;
+  postMessage(message: import("@/types").RequestMessage | import("@/types").RpcRequest): void;
+};
+
+interface Window {
+  l10n: import("@/l10n/webviewL10n").LocalizedStrings;
+}

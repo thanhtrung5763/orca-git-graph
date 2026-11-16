@@ -3,7 +3,7 @@
   "execution": "trusted-worker",
   "id": "git-graph",
   "name": "Git Graph",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "View a graph of your Git history and run common Git actions from it. Based on neo-git-graph.",
   "license": "MIT",
   "engines": {

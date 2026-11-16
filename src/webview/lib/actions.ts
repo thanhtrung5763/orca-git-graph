@@ -11,6 +11,7 @@ import {
   contextMenu,
   dialog,
   expandedCommit,
+  focusedCommit,
   headBranch,
   maxCommits,
   moreCommitsAvailable,
@@ -57,6 +58,7 @@ function clearCommits() {
   moreCommitsAvailable.value = false;
   uncommittedChanges.value = 0;
   maxCommits.value = getWebviewConfig().initialLoadCommits;
+  focusedCommit.value = null;
   closeCommitDetails();
 }
 
@@ -184,6 +186,7 @@ export function toggleCommitDetails(hash: string) {
   const repo = selectedRepo.value;
   batch(() => {
     expandedCommit.value = hash;
+    focusedCommit.value = hash;
     commitDetails.value = null;
   });
 

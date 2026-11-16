@@ -21,6 +21,10 @@ type CommitRowProps = {
   colour: string | undefined;
   /** The details view of this commit is open. */
   expanded: boolean;
+  /** The last commit opened: marked like an open one, also once its details view is closed. */
+  focused: boolean;
+  /** Give the checked out commit its own background. Off while another commit is focused, so only one row is grey. */
+  headBackground: boolean;
   /** Open or close the details view. Absent for the uncommitted changes row. */
   onSelect: (() => void) | undefined;
 };
@@ -39,21 +43,35 @@ function orderRefs(refs: Array<GitRef>, headBranch: string | null) {
 }
 
 /** One background per state. Two unprefixed `bg-*` classes would race on CSS order. */
-function rowBackground(isHead: boolean, expanded: boolean, menuOpen: boolean) {
-  if (expanded) {
+function rowBackground(
+  isHead: boolean,
+  headBackground: boolean,
+  selected: boolean,
+  menuOpen: boolean
+) {
+  if (selected) {
     return "bg-row-selected hover:bg-row-selected-hover";
   }
   if (menuOpen) {
     return "bg-row-hover";
   }
-  if (isHead) {
+  if (isHead && headBackground) {
     return "bg-row-head hover:bg-row-hover";
   }
   return "hover:bg-row-hover";
 }
 
-function rowClass(isHead: boolean, expanded: boolean, selectable: boolean, menuOpen: boolean) {
-  return [rowBackground(isHead, expanded, menuOpen), selectable ? "cursor-pointer" : ""]
+function rowClass(
+  isHead: boolean,
+  headBackground: boolean,
+  selected: boolean,
+  selectable: boolean,
+  menuOpen: boolean
+) {
+  return [
+    rowBackground(isHead, headBackground, selected, menuOpen),
+    selectable ? "cursor-pointer" : ""
+  ]
     .filter(Boolean)
     .join(" ");
 }
@@ -65,6 +83,8 @@ export function CommitRow({
   messages,
   colour,
   expanded,
+  focused,
+  headBackground,
   onSelect
 }: CommitRowProps) {
   const uncommitted = commit.hash === UNCOMMITTED_CHANGES;
@@ -80,7 +100,13 @@ export function CommitRow({
 
   return (
     <tr
-      class={rowClass(isHead, expanded, onSelect !== undefined, menuOpen)}
+      class={rowClass(
+        isHead,
+        headBackground,
+        expanded || focused,
+        onSelect !== undefined,
+        menuOpen
+      )}
       style={colour === undefined ? undefined : `--color-graph: ${colour}`}
       onClick={onSelect}
       onContextMenu={

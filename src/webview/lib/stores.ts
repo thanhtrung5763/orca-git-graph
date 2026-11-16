@@ -18,6 +18,11 @@ export const uncommittedChanges = signal<number>(0);
 
 /** Hash of the commit whose details view is open, or `null` when none is open. */
 export const expandedCommit = signal<string | null>(null);
+/**
+ * The commit the person is on: the last one opened. It stays after its details view closes, so the
+ * row stays marked and Up and Down go on from it instead of from the first commit.
+ */
+export const focusedCommit = signal<string | null>(null);
 /** Details of `expandedCommit`, or `null` while they load. */
 export const commitDetails = signal<GitCommitDetails | null>(null);
 

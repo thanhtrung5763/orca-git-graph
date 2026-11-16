@@ -7,6 +7,7 @@ import {
   commitHead,
   commitList,
   expandedCommit,
+  focusedCommit,
   moreCommitsAvailable,
   selectedBranch,
   selectedRepo,
@@ -28,6 +29,11 @@ export function handleLoadCommits(msg: LoadCommitsMessage) {
     commitHead.value = msg.head;
     moreCommitsAvailable.value = msg.moreCommitsAvailable;
     uncommittedChanges.value = msg.uncommittedChanges;
+
+    const focused = focusedCommit.value;
+    if (focused !== null && !msg.commits.some((commit) => commit.hash === focused)) {
+      focusedCommit.value = null;
+    }
 
     const expanded = expandedCommit.value;
     if (expanded !== null && !msg.commits.some((commit) => commit.hash === expanded)) {

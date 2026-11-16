@@ -18,7 +18,7 @@ import { branchColour } from "@/webview/graph/palette";
 import type { GraphExpansion } from "@/webview/graph/types";
 import { graphWidth } from "@/webview/graph/utils";
 import { toggleCommitDetails } from "@/webview/lib/actions";
-import { columnWidths, commitDetails, expandedCommit } from "@/webview/lib/stores";
+import { columnWidths, commitDetails, expandedCommit, focusedCommit } from "@/webview/lib/stores";
 import { fitColumns } from "@/webview/utils/columnFit";
 import { getCommitDate } from "@/webview/utils/date";
 import { planRows, visibleWindow, type RowWindow } from "@/webview/utils/rowWindow";
@@ -84,6 +84,7 @@ export function CommitTable({ commits, head, headBranch }: CommitTableProps) {
   const resize = useColumnResize(graphColumn);
   const sized = columnWidths.value !== null;
 
+  const focusedHash = focusedCommit.value;
   const expandedHash = expandedCommit.value;
   const expandedRow = commits.findIndex((commit) => commit.hash === expandedHash);
   const expansion: GraphExpansion | null =
@@ -231,6 +232,8 @@ export function CommitTable({ commits, head, headBranch }: CommitTableProps) {
                   messages={messages}
                   colour={branchColour(layout.vertices[item.index]?.colour ?? 0)}
                   expanded={item.index === expandedRow}
+                  focused={commit.hash === focusedHash}
+                  headBackground={focusedHash === null || focusedHash === head}
                   onSelect={
                     commit.hash === UNCOMMITTED_CHANGES
                       ? undefined

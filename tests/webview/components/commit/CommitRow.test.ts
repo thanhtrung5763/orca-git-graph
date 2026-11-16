@@ -42,6 +42,8 @@ describe("CommitRow", () => {
         messages: new Map(),
         colour: undefined,
         expanded: false,
+        focused: false,
+        headBackground: true,
         onSelect: undefined
       }),
       container
@@ -56,5 +58,73 @@ describe("CommitRow", () => {
     expect(messageRegion?.classList.contains("flex-1")).toBe(true);
     expect(messageRegion?.getAttribute("title")).toBe(message);
     expect(messageRegion?.textContent).toBe(message);
+  });
+
+  it("keeps the selected background on the commit last opened, once its details are closed", () => {
+    const commit: GitCommitNode = {
+      hash: "def123456789",
+      parentHashes: [],
+      author: "Author",
+      email: "author@example.com",
+      date: 0,
+      message: "Focused",
+      refs: []
+    };
+    container = document.createElement("tbody");
+
+    const draw = (focused: boolean) =>
+      render(
+        h(CommitRow, {
+          commit,
+          isHead: false,
+          headBranch: null,
+          messages: new Map(),
+          colour: undefined,
+          expanded: false,
+          focused,
+          headBackground: true,
+          onSelect: undefined
+        }),
+        container as HTMLElement
+      );
+
+    draw(true);
+    expect(container.querySelector("tr")?.classList.contains("bg-row-selected")).toBe(true);
+    draw(false);
+    expect(container.querySelector("tr")?.classList.contains("bg-row-selected")).toBe(false);
+  });
+
+  it("drops the checked out commit's own background while another commit is focused", () => {
+    const commit: GitCommitNode = {
+      hash: "head123456789",
+      parentHashes: [],
+      author: "Author",
+      email: "author@example.com",
+      date: 0,
+      message: "Head",
+      refs: []
+    };
+    container = document.createElement("tbody");
+
+    const draw = (headBackground: boolean) =>
+      render(
+        h(CommitRow, {
+          commit,
+          isHead: true,
+          headBranch: null,
+          messages: new Map(),
+          colour: undefined,
+          expanded: false,
+          focused: false,
+          headBackground,
+          onSelect: undefined
+        }),
+        container as HTMLElement
+      );
+
+    draw(true);
+    expect(container.querySelector("tr")?.classList.contains("bg-row-head")).toBe(true);
+    draw(false);
+    expect(container.querySelector("tr")?.classList.contains("bg-row-head")).toBe(false);
   });
 });

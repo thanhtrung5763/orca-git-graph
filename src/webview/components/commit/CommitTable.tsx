@@ -122,7 +122,9 @@ export function CommitTable({ commits, head, headBranch }: CommitTableProps) {
       })
     );
   }, [commits, resize.containerRef]);
-  // Columns the person has sized are sized by their widths, not by the text.
+  // Columns the person has sized are sized by their widths, not by the text. The graph column needs
+  // its minimum as well: the description column takes all the width it is given, so a width on
+  // the `col` alone leaves the graph at the width of its title and the lanes run over the text.
   const minWidths = sized ? null : fit;
 
   useLayoutEffect(() => {
@@ -193,11 +195,13 @@ export function CommitTable({ commits, head, headBranch }: CommitTableProps) {
                 key={title}
                 class={HEADER_CLASS}
                 style={
-                  minWidths !== null && index === 2
-                    ? `min-width: ${minWidths.date}px`
-                    : minWidths !== null && index === 3
-                      ? `min-width: ${minWidths.author}px`
-                      : undefined
+                  !sized && index === 0
+                    ? `min-width: ${graphColumn}px`
+                    : minWidths !== null && index === 2
+                      ? `min-width: ${minWidths.date}px`
+                      : minWidths !== null && index === 3
+                        ? `min-width: ${minWidths.author}px`
+                        : undefined
                 }
               >
                 {index > 0 && <ResizeHandle boundary={index - 1} side="left" resize={resize} />}

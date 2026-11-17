@@ -87,8 +87,9 @@ repository (checkout, reset, push, delete) against the user's own repositories; 
 Orca lists community plugins automatically from a public repository with the `orca-plugin` topic and
 a `vX.Y.Z` tag. **Do not open pull requests to `stablyai/orca-plugins`**: it only takes official plugins.
 
-1. Bump `version` in both `orca-plugin.json` and `package.json`. A published version is never
-   rebuilt with different bytes, and a pushed tag is never moved: ship fixes as a new version.
+1. Bump `version` in both `orca-plugin.json` and `package.json`, and commit as `chore(release): X.Y.Z`.
+   A published version is never rebuilt with different bytes, and a pushed tag is never moved: ship
+   fixes as a new version.
 2. `pnpm run package` and commit `out-orca/` with the source. Orca installs the committed files, and
    its review policy requires generated JavaScript to ship with its source. No bundled native binaries.
 3. `orca plugin validate .` and `orca plugin release-entry .` (it reads the committed `HEAD`).
@@ -96,11 +97,39 @@ a `vX.Y.Z` tag. **Do not open pull requests to `stablyai/orca-plugins`**: it onl
 
 Listing status: `https://www.onorca.dev/plugins/thanhtrung5763/orca-git-graph`.
 
+## Commits and pull requests
+
+Commits follow [Conventional Commits](https://www.conventionalcommits.org/): `type(scope): subject`.
+
+- **Type**: `feat` (new behaviour), `fix` (a bug), `perf`, `refactor`, `docs`, `test`, `build`
+  (`esbuild.js`, dependencies, `out-orca/` only), `ci`, `chore`. Use `feat!:` or a `BREAKING CHANGE:`
+  footer when a setting or the protocol changes in a way that breaks existing users.
+- **Scope** is optional and names the area: `graph`, `panel`, `worker`, `backend`, `ui`, `find`, `diff`,
+  `manifest`, `docs`. Leave it out when a change spans several.
+- **Subject**: imperative, lower case after the colon, no full stop, 72 characters at most
+  (`fix(graph): keep the column as wide as its lanes`).
+- **Body**: say why, not what the diff already shows; wrap at 100 columns. Reference an issue with
+  `Fixes #123` in a footer.
+- One logical change per commit, with its tests. Do not mix a refactor with a fix.
+- A release is its own commit: `chore(release): 0.1.6` (version bump and rebuilt `out-orca/`), tagged
+  `v0.1.6`. Do not put source changes in it.
+
+Pull requests:
+
+- The title is the commit subject the change would have, in the same form: `type(scope): subject`.
+  Branches are named `type/short-topic` (`fix/graph-column-width`).
+- The description has what changed and why, how it was tested (`format`, `lint`, `typecheck`, `test`,
+  and for a change to the worker, the panel or the manifest, the steps from "Testing against a real
+  Orca"), and a screenshot for anything visible.
+- Keep a pull request to one change. Do not bump `version` or commit `out-orca/` in it: the maintainer
+  does that in the release commit.
+- Merge with a squash, so the title above becomes the commit on `main`.
+- Never open a pull request to `stablyai/orca-plugins` (see Releasing).
+
 ## Style
 
 - TypeScript, strict. oxfmt (100 columns, no trailing commas) and oxlint decide formatting and lint;
   run `format:fix` instead of arguing with them.
 - Prefer small, tested changes. Behaviour that touches git runs in tests against a real temporary
   repository (`tests/backend/helpers.ts`), not mocks.
-- Commit messages: a short imperative subject, then why.
 - On macOS, `sed -i` needs an argument (`sed -i ''`); prefer editing files with the editor tools.

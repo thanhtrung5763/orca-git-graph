@@ -1,6 +1,6 @@
 {
   "name": "orca-git-graph",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "description": "Git Graph for Orca: a commit graph panel with common Git actions.",
   "keywords": [
